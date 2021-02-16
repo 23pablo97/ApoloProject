@@ -1,8 +1,10 @@
-from telebot.utils import send_photo, send_message
-from telebot.apolo_speedtest import calculate_speedtest
+from .utils import send_photo, send_message
+from .apolo_speedtest import calculate_speedtest
+from telebot import celery
 
 apolo_img = 'https://drive.google.com/uc?export=view&id=1HHrdycezqu9NUnWqoIKYmIsA4rmftRdg'
 
+@celery.task()
 def generate_reply(text, chat_id, msg_id):
     if   text == '/start': get_start(chat_id)
     elif text == '/help': get_help(chat_id)

@@ -1,6 +1,6 @@
 import telegram
 import time
-from telebot.credentials import chat_admin, bot_token
+from .credentials import chat_admin, bot_token
 
 global bot
 global TOKEN 
