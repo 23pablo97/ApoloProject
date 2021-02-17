@@ -11,7 +11,7 @@ def log(type, msg):
     message = '[{}] {}: {}'.format(datetime.now(), type, msg)
     print(message)
 
-    if type == 'ERROR':
+    if type == 'ERROR' or type == 'ALERT':
         sendError(message)
 
 def sendError(message):

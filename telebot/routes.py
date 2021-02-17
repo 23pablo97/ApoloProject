@@ -1,8 +1,12 @@
 import telegram
+import telebot
 from flask import request, Blueprint
 from .credentials import bot_token, bot_user_name, URL 
 from .logger import log
 from .brain_ai import generate_reply
+from .utils import managing_periodic_tasks
+from .apolo_speedtest import monitoring
+import json
 
 global bot
 global TOKEN 
@@ -37,6 +41,23 @@ def set_webhook():
         return "webhook setup failed"
 
 
+@bp.route('/internet/monitoring', methods=['GET', 'POST'])
+def internet_monitoring():
+    name_task = 'internet_monitoring'
+    status = request.args.get('status')
+    return managing_periodic_tasks(monitoring, name_task, status, seconds=900)
+
+
+@bp.route('/internet/historical', methods=['GET', 'POST'])
+def internet_historical():
+    documents = telebot.apoloModel.speedtest.find({})
+    response = []
+    for document in documents:
+        document['_id'] = str(document['_id'])
+        response.append(document)
+    return json.dumps(response)
+
+
 @bp.route('/')
 def index():
-    return '.'
+    return 'ApoloBot is online!'
