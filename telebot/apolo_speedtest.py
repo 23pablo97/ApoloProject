@@ -3,6 +3,7 @@ from telebot import celery
 from .logger import log
 from datetime import datetime
 from pymongo import MongoClient
+from .credentials import user_mongo, pass_mongo
 
 servers = []
 threads = None
@@ -26,7 +27,7 @@ def calculate_speedtest():
 @celery.task()
 def calculate_saving_data():
     speedtest = calculate_speedtest()
-    mongo = MongoClient('localhost')
+    mongo = MongoClient('mongodb://{USER}:{PASS}@127.0.0.1'.format(USER=user_mongo, PASS=pass_mongo))
     apoloModel = mongo['ApoloBot']
     apoloModel.speedtest.insert_one(speedtest).inserted_id
 
